@@ -820,6 +820,7 @@ def generate_inputs(model_workspace):
 
                 # get the name of the PySAM function
                 sam_function = resource_template.iloc[0, 0]
+                print("sam_function", sam_function)
 
                 pysam_dir = model_workspace / gen_set
 
@@ -839,6 +840,7 @@ def generate_inputs(model_workspace):
                     df_vcf = df_vcf.merge(
                         solar_vcf, how="left", left_index=True, right_index=True
                     )
+                    
 
                 elif sam_function == "csp_tower":
                     # run PySAM to simulate the solar outputs
@@ -1490,6 +1492,7 @@ def simulate_solar_generation(
         nsrdb_path_dict = nsrdbfetcher.resource_file_paths_dict
 
         for filename in nsrdb_path_dict:
+
             solarResource = tools.SAM_CSV_to_solar_data(nsrdb_path_dict[filename])
 
             # assign the solar resource input file to the model
@@ -1541,7 +1544,7 @@ def simulate_solar_generation(
 
     # groupby column name
     # df_resource = df_resource.groupby(df_resource.columns, axis=1).mean()
-
+    
     return df_resource
 
 
@@ -1637,9 +1640,11 @@ def simulate_wind_generation(
 
         # get a dictionary of all of the filepaths
         wtk_path_dict = wtkfetcher.resource_file_paths_dict
-
+        
         for filename in wtk_path_dict:
+            
             windResource = tools.SRW_to_wind_data(wtk_path_dict[filename])
+            # windResource = pd.read_csv(wtk_path_dict[filename])
 
             # assign the wind resource input data to the model
             system_model_wind.Resource.wind_resource_data = windResource
